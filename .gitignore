@@ -1,0 +1,4 @@
+# logs and local test artifacts
+*.log
+Clean-StubbornDirs.log
+csd_test*/
