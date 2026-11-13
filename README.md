@@ -4,6 +4,16 @@ A small PowerShell tool for Windows that force-deletes **locked / access-denied 
 
 一个用于 Windows 的 PowerShell 小工具：强制删除**被锁定 / 拒绝访问的文件夹**（如系统升级残留 `C:\$WINDOWS.~BT`、卸不干净的软件目录、归 `SYSTEM`/`TrustedInstaller` 所有的顽固目录）。
 
+## 文件说明 / What each file does
+
+| 文件 | 作用（一句话） |
+|---|---|
+| `Clean-StubbornDirs.ps1` | 主脚本。接管所有权 + 授权 + 删除指定文件夹；支持 `-WhatIf` 预演、`-Yes` 免确认。 |
+| `Run-Clean-StubbornDirs.cmd` | 双击启动器。自己选文件夹，**先预演看结果，输入 Y 才真删**。 |
+| `一键删除系统升级残留.cmd` | 专门一键删 `C:\$WINDOWS.~BT`（约 27 GB）。双击 → UAC 点「是」→ 输入 Y。 |
+| `README.md` | 使用说明（本文件）。 |
+| `LICENSE` | MIT 开源协议。 |
+
 ---
 
 ## ⚠️ Disclaimer / 免责声明
