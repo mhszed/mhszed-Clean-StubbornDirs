@@ -14,7 +14,7 @@ set "TARGET=%~1"
 
 if "%TARGET%"=="" (
     echo.
-    echo Drag a folder onto this window, OR paste the full folder path, then press Enter.
+    echo Type or paste the full folder path, then press Enter.
     set /p "TARGET=Path: "
 )
 set "TARGET=%TARGET:"=%"
