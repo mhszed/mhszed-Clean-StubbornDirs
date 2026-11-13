@@ -4,13 +4,33 @@ A small PowerShell tool for Windows that force-deletes **locked / access-denied 
 
 一个用于 Windows 的 PowerShell 小工具：强制删除**被锁定 / 拒绝访问的文件夹**（如系统升级残留 `C:\$WINDOWS.~BT`、卸不干净的软件目录、归 `SYSTEM`/`TrustedInstaller` 所有的顽固目录）。
 
+> 💡 **C 盘爆满？** 可以用本工具清理系统升级残留（`$WINDOWS.~BT`、`Windows.old`）、软件安装残留和 Temp 临时文件，快速释放大量空间。本工具就是在实际清理 C 盘时做出来的。
+
+---
+
+## 🚨 严重警告 / SEVERE WARNING
+
+**`Run-Clean-StubbornDirs.cmd` 有风险：当你输入一个路径后，它会把这个文件夹「连同文件夹本身」整个永久删除**（不是只清空里面的内容），而且**不进回收站、无法恢复**。**路径输错 = 误删别的目录，甚至让系统无法启动。**
+
+使用前务必：
+
+- 先看预演结果，确认路径就是你要删的那个文件夹；
+- 重要数据先备份；
+- 不确定就别用它删。
+
+作者对任何数据丢失 / 系统损坏**不承担责任**。
+
+---
+
 ## 文件说明 / What each file does
 
 | 文件 | 作用（一句话） |
 |---|---|
 | `Clean-StubbornDirs.ps1` | 主脚本。接管所有权 + 授权 + 删除指定文件夹；支持 `-WhatIf` 预演、`-Yes` 免确认。 |
-| `Run-Clean-StubbornDirs.cmd` | 双击启动器。自己选文件夹，**先预演看结果，输入 Y 才真删**。 |
-| `一键删除系统升级残留.cmd` | 专门一键删 `C:\$WINDOWS.~BT`（约 27 GB）。双击 → UAC 点「是」→ 输入 Y。 |
+| `Run-Clean-StubbornDirs.cmd` | **通用启动器**：自己输入文件夹路径，**连同文件夹本身一起删**；先预演、输入 Y 才真删。**有风险，见上方警告。** |
+| `一键删除系统升级残留.cmd` | **一键工具①**：专门删 `C:\$WINDOWS.~BT`（系统升级残留，约 27 GB）。双击 → UAC 点「是」→ 输入 Y。 |
+| `Clear-TempDirs.ps1` | **Temp 清理逻辑**：只删 N 天前（默认 1 天）的文件，跳过占用文件，不删 Temp 目录本身。 |
+| `一键清理Temp.cmd` | **一键工具②**：双击清理 `%TEMP%` 和 `C:\Windows\Temp` 里的旧垃圾；先预演、输入 Y 才删。 |
 | `README.md` | 使用说明（本文件）。 |
 | `LICENSE` | MIT 开源协议。 |
 
@@ -80,6 +100,17 @@ Windows 下可直接双击启动器，无需手写命令：
 4. 先显示**预演结果**（不会删除）；确认无误后输入 **`Y`** 回车才真正删除
 
 > 若双击没有弹出管理员权限提示，可改成 **右键 → 以管理员身份运行**。
+
+### 一键清理 Temp / Clean temp files
+
+双击 **`一键清理Temp.cmd`**（UAC 点「是」）：
+
+- 清理 **`%TEMP%`（当前用户临时目录）** 和 **`C:\Windows\Temp`（系统临时目录）** 中**修改时间超过 1 天**的文件；
+- **跳过正在被占用的文件**，也**不删除 Temp 目录本身**；
+- 先显示「能释放多少」，输入 **`Y`** 才真正删除；
+- 结束后在桌面写 `TempClean_log.txt`。
+
+> 想清更早的文件：管理员 PowerShell 里运行 `.\Clear-TempDirs.ps1 -Days 7`（默认会先预演并让你输入 Y 确认）。
 
 ### Parameters / 参数
 
